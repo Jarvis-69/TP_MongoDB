@@ -20,9 +20,12 @@ b. Vérifiez que l'index a été créé en utilisant la méthode listIndexes ().
     { v: 2, key: { _id: 1 }, name: '_id_' },
     { v: 2, key: { DATE: 1 }, name: 'DATE_1' }
     ]
+
    
 Requêtes MongoDB:
 a. Recherchez les stations météorologiques qui ont enregistré une température supérieure à 25° <!-- pendant les mois d'été (juin à août).  --> Utilisez la méthode find () et les opérateurs de comparaison pour trouver les documents qui correspondent à vos critères.
+
+    TX = TEMPÉRATURE MAXIMALE
     
     db.Données.find({"TX" : {$gte : 25}}, {"_id" : 1})
     {
@@ -36,12 +39,18 @@ a. Recherchez les stations météorologiques qui ont enregistré une températur
     }
 
 Je n'arrive pas à changer la date comme il le faut pour l'exercice, mais la requète donnerai ça :
+
+    TX = TEMPÉRATURE MAXIMALE
             
     db.Données.find({"TX" : {$elemMatch : {$and : [{"DATE" : {$gte : "2020/06/01"} }, {"DATE" : {$lte :"2020/08/31"} }, {$gte : "25" }}, {"_id" : 1})
 
     db.Données.find({"readings": {$elemMatch: {"TX": {$gt: 25}, "DATE": {$gte: new Date("2020/06/01"), $lte: new Date("2020/08/31")}}}}, {"_id" : 1})
 
+
 b. Triez les stations météorologiques par HAUTEUR DE PRÉCIPITATIONS QUOTIDIENNE, du plus élevé au plus bas. Utilisez la méthode sort () pour trier les résultats.
+
+    RR = HAUTEUR DE PRÉCIPITATIONS QUOTIDIENNE;
+    J'ai changé la pression atmosphérique par la HAUTEUR DE PRÉCIPITATIONS QUOTIDIENNE car je n'avais pas cette donnée dans mon jeu de données.
     
     db.Données.find({}, {"RR" : 1}).sort({"RR" : -1})
     {
@@ -69,6 +78,8 @@ b. Triez les stations météorologiques par HAUTEUR DE PRÉCIPITATIONS QUOTIDIEN
 Framework d'agrégation:
 a. Calculez la température moyenne par station météorologique pour chaque mois de l'année. Utilisez le framework d'agrégation de MongoDB pour effectuer des calculs sur les données et grouper les données par mois.
 
+    TM = TEMPÉRATURE MOYENNE
+
     db.Données.aggregate([{$unwind: "$TM"}, {$group: {_id: {station: "$NOM", month: {$month: "$DATE"}}, avgTemperature: {$avg: "$TM"}}}])
     
     {
@@ -95,6 +106,8 @@ a. Calculez la température moyenne par station météorologique pour chaque moi
 
 
 b. Trouvez la station météorologique qui a enregistré la plus haute température en été.  Utilisez le framework d'agrégation de MongoDB pour effectuer des calculs sur les données et trouver la valeur maximale.
+
+    TM = TEMPÉRATURE MOYENNE
 
     db.Données.aggregate([{$unwind: "$TM"}, {$match: {"DATE": {"$gte": new Date("2020/06/01"),"$lte": new Date("2020/08/31")}}}, {$group: {_id: "$NOM",maxTemperature: { $max: "$TM" }}},{$sort: {maxTemperature: -1}},{$limit: 1}]) 
     
