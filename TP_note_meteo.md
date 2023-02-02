@@ -1,5 +1,7 @@
 Jeu de données: Téléchargez ou générez un jeu de données de stations météorologiques, qui incluent la date, la température, la pression atmosphérique, etc.
 
+Lien vers le jeu de données : https://www.data.gouv.fr/fr/datasets/donnees-quotidiennes-de-119-stations-en-france-metropolitaine-pour-les-etudes-de-liens-entre-meteorologie-et-covid-19-du-01-01-2020-au-21-04-2021/
+
 Préparation des données:
 a. Importez les données de stations météorologiques dans MongoDB en utilisant la commande mongoimport. -->
 b. Assurez-vous que les données sont bien structurées et propres pour une utilisation ultérieure.
